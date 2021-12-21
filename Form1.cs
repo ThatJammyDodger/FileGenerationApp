@@ -20,6 +20,7 @@ namespace Files
         {
             InitializeComponent();
             fetchFoldersCreated();
+            this.Text = "Making Some Files";
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -109,20 +110,19 @@ namespace Files
 
                 string filePath = Path.Combine(folder, $"{randLetters}.json");
                 File.Create(filePath).Close();
+                StreamWriter sw = new StreamWriter(filePath);
+                sw.WriteLine( "{\n"+ $"\t\"randomCharacters\" : \"{randLetters}\"" + "\n}");                
+                sw.Close();
+
             }
 
             // ASYNC
 
             for (int i = 1; i <= 5000; i++)
-            { Task.Run(makeFile); }
-
-
-
-            // SYNCHRONOUS
-
-            //for (int i = 1; i <= 5000; i++)
-            //{ makeFile(); }
-
+            { 
+                Task.Run(makeFile);     // ASYNCHRONOUS
+                //makeFile();             // SYNCHRONOUS
+            }
         }
     }
 }
